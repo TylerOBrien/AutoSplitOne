@@ -27,6 +27,8 @@ namespace aso {
 class BaseAnalyzer {
 public:
     virtual Event poll() = 0;
+
+    virtual void  init() = 0;
     virtual void  reset() = 0;
     virtual void  analyze(Point position, const unsigned char *color) = 0;
     virtual void  conclude() = 0;
