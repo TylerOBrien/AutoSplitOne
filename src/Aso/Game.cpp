@@ -19,6 +19,13 @@ namespace aso
 /**
  *
  */
+Game::Game()
+    : _analyzerCount(0)
+{}
+
+/**
+ *
+ */
 void Game::__dispatch(Point position, const unsigned char *color)
 {
     for (std::uint8_t i = 0; i < _analyzerCount; i++)
