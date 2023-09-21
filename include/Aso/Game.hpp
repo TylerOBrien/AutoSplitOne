@@ -49,6 +49,8 @@ public:
         Ty::index = _analyzerCount;
 
         _analyzers[Ty::index] = std::make_shared<Ty>();
+        _analyzers[Ty::index]->init();
+
         _analyzerCount++;
     }
 
