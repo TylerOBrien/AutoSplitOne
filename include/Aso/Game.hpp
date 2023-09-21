@@ -28,6 +28,13 @@
 
 namespace aso {
 
+struct GameConfigKey {
+    static int xMin;
+    static int xMax;
+    static int yMin;
+    static int yMax;
+};
+
 class Game {
 public:
     static constexpr std::uint8_t MAX_ANALYZERS = 32;

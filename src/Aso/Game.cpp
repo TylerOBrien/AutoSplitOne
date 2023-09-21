@@ -9,6 +9,17 @@
 
 /*
 |--------------------------------------------------------------------------
+| Locals
+|--------------------------------------------------------------------------
+*/
+
+int aso::GameConfigKey::xMin = -1;
+int aso::GameConfigKey::xMax = -1;
+int aso::GameConfigKey::yMin = -1;
+int aso::GameConfigKey::yMax = -1;
+
+/*
+|--------------------------------------------------------------------------
 | Functions
 |--------------------------------------------------------------------------
 */
@@ -19,9 +30,13 @@ namespace aso
 /**
  *
  */
-Game::Game()
-    : _analyzerCount(0)
-{}
+Game::Game() : _analyzerCount(0)
+{
+    aso::GameConfigKey::xMin = Config::insert(260);
+    aso::GameConfigKey::xMax = Config::insert(1660);
+    aso::GameConfigKey::yMin = Config::insert(0);
+    aso::GameConfigKey::yMax = Config::insert(1080);
+}
 
 /**
  *
@@ -67,10 +82,10 @@ void Game::updateFromCaptureFrame(const cv::Mat &frame)
         int x = j % frame.cols;
         int y = j / frame.cols;
 
-        if (x >= Config::GAME_X &&
-            x <= Config::GAME_XMAX &&
-            y >= Config::GAME_Y &&
-            y <= Config::GAME_YMAX)
+        if (x >= Config::geti(aso::GameConfigKey::xMin) &&
+            x <= Config::geti(aso::GameConfigKey::xMax) &&
+            y >= Config::geti(aso::GameConfigKey::yMin) &&
+            y <= Config::geti(aso::GameConfigKey::yMax))
         {
             __dispatch({x, y}, frame.data + i);
         }
