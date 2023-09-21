@@ -54,7 +54,7 @@ void Game::__analyze(Point position, const unsigned char *color)
  */
 Event Game::poll()
 {
-    Event event;
+    static Event event;
 
     for (std::uint8_t i = 0; i < _analyzerCount; i++)
     {
