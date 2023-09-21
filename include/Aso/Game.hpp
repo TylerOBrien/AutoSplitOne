@@ -47,7 +47,8 @@ public:
     inline void add()
     {
         Ty::index = _analyzerCount;
-        _analyzers[_analyzerCount] = std::make_shared<Ty>();
+
+        _analyzers[Ty::index] = std::make_shared<Ty>();
         _analyzerCount++;
     }
 
