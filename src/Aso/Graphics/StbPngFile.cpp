@@ -71,7 +71,7 @@ StbPngFile::~StbPngFile()
  */
 int StbPngFile::nchannels() const
 {
-    _nchannels;
+    return _nchannels;
 }
 
 /**
