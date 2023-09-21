@@ -89,7 +89,7 @@ void EverDriveN8Analyzer::reset()
 /**
  *
  */
-void EverDriveN8Analyzer::analyze(Point position, const unsigned char *color)
+void EverDriveN8Analyzer::analyze(Point position, int index, const unsigned char *color)
 {
     if (color[0] > 32 && color[1] > 32 && color[2] > 32)
     {

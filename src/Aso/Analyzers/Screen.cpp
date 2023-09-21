@@ -85,7 +85,7 @@ void ScreenAnalyzer::reset()
 /**
  *
  */
-void ScreenAnalyzer::analyze(Point position, const unsigned char *color)
+void ScreenAnalyzer::analyze(Point position, int index, const unsigned char *color)
 {
     if (_aso_screen_min.r > color[2])
     {

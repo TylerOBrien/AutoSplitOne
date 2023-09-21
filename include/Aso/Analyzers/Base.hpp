@@ -29,7 +29,7 @@ public:
     virtual Event poll() = 0;
 
     virtual void  reset() = 0;
-    virtual void  analyze(Point position, const unsigned char *color) = 0;
+    virtual void  analyze(Point position, int index, const unsigned char *color) = 0;
     virtual void  conclude() = 0;
     virtual void  dispatch() = 0;
 };
