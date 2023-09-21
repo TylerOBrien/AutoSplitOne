@@ -8,6 +8,8 @@
 #include <Aso/Graphics/Color.hpp>
 #include <Aso/Math/Point.hpp>
 
+#include <ncurses.h>
+
 /*
 |--------------------------------------------------------------------------
 | Preprocesser
@@ -18,11 +20,6 @@
 #define SCREEN_Y 13
 #define SCREEN_W 1324
 #define SCREEN_H 1054
-
-#define SCREEN_BLACK_R 24
-#define SCREEN_BLACK_G 24
-#define SCREEN_BLACK_B 24
-#define SCREEN_BLACK_TOLERANCE 24
 
 /*
 |--------------------------------------------------------------------------
@@ -115,21 +112,23 @@ void ScreenAnalyzer::analyze(Point position, const unsigned char *color)
     }
 }
 
+#include <ncurses.h>
+
 /**
  *
  */
 void ScreenAnalyzer::conclude()
 {
     _currentState.isBlack = (
-        _aso_screen_max.r < (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_max.g < (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_max.b < (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
+        _aso_screen_max.r < 32 &&
+        _aso_screen_max.g < 32 &&
+        _aso_screen_max.b < 32
     );
 
     _currentState.isWhite = (
-        _aso_screen_min.r > (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_min.g > (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_min.b > (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
+        _aso_screen_min.r > 224 &&
+        _aso_screen_min.g > 224 &&
+        _aso_screen_min.b > 224
     );
 }
 
@@ -140,6 +139,7 @@ ScreenState ScreenAnalyzer::state() const
 {
     return _currentState;
 }
+
 
 /**
  *
