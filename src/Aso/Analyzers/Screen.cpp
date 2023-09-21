@@ -121,15 +121,15 @@ void ScreenAnalyzer::analyze(Point position, const unsigned char *color)
 void ScreenAnalyzer::conclude()
 {
     _currentState.isBlack = (
-        _aso_screen_min.r < (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_min.g < (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_min.b < (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
+        _aso_screen_max.r < (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
+        _aso_screen_max.g < (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
+        _aso_screen_max.b < (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
     );
 
     _currentState.isWhite = (
-        _aso_screen_max.r > (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_max.g > (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
-        _aso_screen_max.b > (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
+        _aso_screen_min.r > (SCREEN_BLACK_R + SCREEN_BLACK_TOLERANCE) &&
+        _aso_screen_min.g > (SCREEN_BLACK_G + SCREEN_BLACK_TOLERANCE) &&
+        _aso_screen_min.b > (SCREEN_BLACK_B + SCREEN_BLACK_TOLERANCE)
     );
 }
 
