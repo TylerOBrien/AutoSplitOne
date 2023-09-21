@@ -24,6 +24,17 @@
 
 namespace aso {
 
+struct NinjaGaidenConfig {
+    struct HUD {
+        static int xMin();
+        static int yMin();
+        static int xMax();
+        static int yMax();
+        static int width();
+        static int height();
+    };
+};
+
 struct NinjaGaidenConfigKey {
     struct HUD {
         static int xMin;
@@ -63,6 +74,10 @@ public:
     void dispatch();
 
     bool isWithinHUD(Point position) const;
+    bool isWithinKnownZero(Point position) const;
+    bool isWithinTimerFirstDigit(Point position) const;
+    bool isWithinTimerSecondDigit(Point position) const;
+    bool isWithinTimerThirdDigit(Point position) const;
 
     NinjaGaidenState state() const;
 };
