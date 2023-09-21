@@ -4,16 +4,33 @@
 #include <Aso/Aso.hpp>
 
 namespace aso {
+namespace Config {
 
-enum Config {
-    GAME_X = 260,
-    GAME_Y = 0,
-    GAME_W = 1400,
-    GAME_H = 1080,
-    GAME_XMAX = Config::GAME_X + Config::GAME_W,
-    GAME_YMAX = Config::GAME_Y + Config::GAME_H,
+union Entry {
+    char c;
+    int i;
+    float f;
+    bool b;
 };
 
+int uid();
+
+int insert(char value);
+int insert(int value);
+int insert(float value);
+int insert(bool value);
+
+char getc(int uid);
+int geti(int uid);
+float getf(int uid);
+bool getb(int uid);
+
+void set(int uid, char value);
+void set(int uid, int value);
+void set(int uid, float value);
+void set(int uid, bool value);
+
+}
 }
 
 #endif
