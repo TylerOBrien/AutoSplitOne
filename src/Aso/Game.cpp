@@ -79,6 +79,7 @@ void Game::updateFromCaptureFrame(const cv::Mat &frame)
     for (std::uint8_t i = 0; i < _analyzerCount; i++)
     {
         _analyzers[i]->conclude();
+        _analyzers[i]->dispatch();
     }
 }
 
