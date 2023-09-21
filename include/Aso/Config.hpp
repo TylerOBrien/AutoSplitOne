@@ -3,19 +3,16 @@
 
 #include "Aso.hpp"
 
-namespace aso
-{
+namespace aso {
 
 enum Config {
-    GAME_X = 475,
-    GAME_Y = 13,
-    GAME_W = 1324,
-    GAME_H = 1054,
+    GAME_X = 260,
+    GAME_Y = 0,
+    GAME_W = 1400,
+    GAME_H = 1080,
     GAME_XMAX = Config::GAME_X + Config::GAME_W,
     GAME_YMAX = Config::GAME_Y + Config::GAME_H,
 };
-
-
 
 }
 
