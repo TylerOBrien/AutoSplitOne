@@ -44,7 +44,7 @@ int ScreenAnalyzer::index = -1;
 /**
  *
  */
-void ScreenAnalyzer::init()
+ScreenAnalyzer::ScreenAnalyzer()
 {
     //
 }

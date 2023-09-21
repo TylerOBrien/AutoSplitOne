@@ -53,9 +53,10 @@ public:
     typedef NinjaGaidenState EventType;
     typedef NinjaGaidenState StateType;
 
+    NinjaGaidenAnalyzer();
+
     Event poll();
 
-    void init();
     void reset();
     void analyze(Point position, const unsigned char *color);
     void conclude();

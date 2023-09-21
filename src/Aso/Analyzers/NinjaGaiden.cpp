@@ -36,7 +36,7 @@ int NinjaGaidenAnalyzer::index = -1;
 /**
  *
  */
-void NinjaGaidenAnalyzer::init()
+NinjaGaidenAnalyzer::NinjaGaidenAnalyzer()
 {
     aso::NinjaGaidenConfigKey::HUD::xMin = Config::insert(440);
     aso::NinjaGaidenConfigKey::HUD::xMax = Config::insert(440 + 1062);

@@ -47,7 +47,7 @@ int EverDriveN8Analyzer::index = -1;
 /**
  *
  */
-void EverDriveN8Analyzer::init()
+EverDriveN8Analyzer::EverDriveN8Analyzer()
 {
     //
 }
