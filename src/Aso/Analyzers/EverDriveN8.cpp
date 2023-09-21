@@ -47,6 +47,14 @@ int EverDriveN8Analyzer::index = -1;
 /**
  *
  */
+void EverDriveN8Analyzer::init()
+{
+    //
+}
+
+/**
+ *
+ */
 Event EverDriveN8Analyzer::poll()
 {
     static Event event;

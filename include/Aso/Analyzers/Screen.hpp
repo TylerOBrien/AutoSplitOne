@@ -50,6 +50,7 @@ public:
 
     Event poll();
 
+    void init();
     void reset();
     void analyze(Point position, const unsigned char *color);
     void conclude();

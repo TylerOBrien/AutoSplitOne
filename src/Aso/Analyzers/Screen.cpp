@@ -46,6 +46,14 @@ int ScreenAnalyzer::index = -1;
 /**
  *
  */
+void EverDriveN8Analyzer::init()
+{
+    //
+}
+
+/**
+ *
+ */
 Event ScreenAnalyzer::poll()
 {
     static Event event;
