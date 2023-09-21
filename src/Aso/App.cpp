@@ -112,12 +112,4 @@ bool App::isAlive()
     return _isAlive;
 }
 
-/**
- *
- */
-bool App::isReady()
-{
-    return true;
-}
-
 }
