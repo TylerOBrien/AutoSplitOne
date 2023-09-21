@@ -31,11 +31,11 @@ public:
     int type;
     int data;
 
-    Event() : type(0), data(0) {}
-    Event(int type) : type(type), data(0) {}
-    Event(int type, int data) : type(type), data(data) {}
+    Event();
+    Event(int type);
+    Event(int type, int data);
 
-    operator bool () const { return false; }
+    operator bool () const;
 };
 
 }
