@@ -47,6 +47,26 @@ NinjaGaidenAnalyzer::NinjaGaidenAnalyzer()
 /**
  *
  */
+Event NinjaGaidenAnalyzer::poll()
+{
+    static Event event;
+
+    if (_events.empty())
+    {
+        event.type = Event::None;
+    }
+    else
+    {
+        event.type = _events.front();
+        _events.pop();
+    }
+
+    return event;
+}
+
+/**
+ *
+ */
 void NinjaGaidenAnalyzer::reset()
 {
     //

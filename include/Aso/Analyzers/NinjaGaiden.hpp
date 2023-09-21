@@ -46,7 +46,7 @@ class NinjaGaidenAnalyzer
 protected:
     NinjaGaidenState _currentState;
     NinjaGaidenState _previousState;
-    std::queue<NinjaGaidenState> _events;
+    std::queue<NinjaGaidenEvent> _events;
 public:
     static int index;
 
