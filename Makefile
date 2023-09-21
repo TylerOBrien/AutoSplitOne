@@ -5,7 +5,7 @@ SUB_DIR   := Aso Aso/Analyzers Aso/Graphics Aso/Math Aso/IO
 SRC_DIR   := $(addprefix src/,$(SUB_DIR))
 BUILD_DIR := $(addprefix build/,$(SUB_DIR))
 SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
-OBJ       := $(patsubst src/%.cpp,build/%.o,$(SRC))
+OBJS      := $(patsubst src/%.cpp,build/%.o,$(SRC))
 
 CC        := g++
 LD        := g++
@@ -20,8 +20,8 @@ $1/%.o: %.cpp
 	$(CC) $(CFLAGS) $$< -o $$@
 endef
 
-all: prepare build/main.o $(OBJ)
-	$(LD) -Wl,-s build/main.o $(OBJ) $(LIBS) -o $(BINARY)
+all: prepare build/main.o $(OBJS)
+	$(LD) -Wl,-s build/main.o $(OBJS) $(LIBS) -o $(BINARY)
 
 prepare: $(BUILD_DIR)
 
