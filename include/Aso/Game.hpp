@@ -38,6 +38,8 @@ protected:
     std::uint8_t _analyzerCount;
     std::queue<Event> _events;
 public:
+    Game();
+
     Event poll();
     void updateFromCaptureFrame(const cv::Mat &frame);
 
