@@ -33,7 +33,7 @@ inline NumberTy diff(NumberTy a, NumberTy b)
 template <class NumberTy>
 inline bool isBetween(NumberTy value, NumberTy min, NumberTy max)
 {
-   return a >= min && a <= max;
+   return value >= min && value <= max;
 }
 
 inline int random(int min, int max)
