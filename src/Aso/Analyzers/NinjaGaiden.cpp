@@ -20,6 +20,8 @@ int aso::NinjaGaidenConfigKey::HUD::xMax = -1;
 int aso::NinjaGaidenConfigKey::HUD::yMin = -1;
 int aso::NinjaGaidenConfigKey::HUD::yMax = -1;
 
+int aso::NinjaGaidenAnalyzer::index = -1;
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -27,11 +29,6 @@ int aso::NinjaGaidenConfigKey::HUD::yMax = -1;
 */
 
 namespace aso {
-
-/**
- *
- */
-int NinjaGaidenAnalyzer::index = -1;
 
 /**
  *
