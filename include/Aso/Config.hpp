@@ -1,7 +1,7 @@
 #ifndef _ASO_CONFIG_HPP_
 #define _ASO_CONFIG_HPP_
 
-#include "Aso.hpp"
+#include <Aso/Aso.hpp>
 
 namespace aso {
 
