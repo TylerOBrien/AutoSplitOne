@@ -169,7 +169,7 @@ void ScreenAnalyzer::dispatch()
             _events.push(ScreenEvent::WHITE);
         }
     }
-    else if (_previousState.isBlack)
+    else if (_previousState.isWhite)
     {
         _events.push(ScreenEvent::UNWHITE);
     }
