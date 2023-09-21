@@ -46,7 +46,7 @@ int ScreenAnalyzer::index = -1;
 /**
  *
  */
-void EverDriveN8Analyzer::init()
+void ScreenAnalyzer::init()
 {
     //
 }
