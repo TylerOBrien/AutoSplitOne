@@ -41,7 +41,7 @@ Game::Game() : _analyzerCount(0)
 /**
  *
  */
-void Game::__dispatch(Point position, const unsigned char *color)
+void Game::__analyze(Point position, const unsigned char *color)
 {
     for (std::uint8_t i = 0; i < _analyzerCount; i++)
     {
@@ -87,7 +87,7 @@ void Game::updateFromCaptureFrame(const cv::Mat &frame)
             y >= Config::geti(aso::GameConfigKey::yMin) &&
             y <= Config::geti(aso::GameConfigKey::yMax))
         {
-            __dispatch({x, y}, frame.data + i);
+            __analyze({x, y}, frame.data + i);
         }
     }
 

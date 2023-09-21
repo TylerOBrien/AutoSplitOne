@@ -39,7 +39,7 @@ class Game {
 public:
     static constexpr std::uint8_t MAX_ANALYZERS = 32;
 private:
-    void __dispatch(Point position, const unsigned char *color);
+    void __analyze(Point position, const unsigned char *color);
 protected:
     std::array<std::shared_ptr<BaseAnalyzer>, Game::MAX_ANALYZERS> _analyzers;
     std::uint8_t _analyzerCount;
