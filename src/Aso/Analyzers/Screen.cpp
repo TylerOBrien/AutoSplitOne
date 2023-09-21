@@ -8,8 +8,6 @@
 #include <Aso/Graphics/Color.hpp>
 #include <Aso/Math/Point.hpp>
 
-#include <ncurses.h>
-
 /*
 |--------------------------------------------------------------------------
 | Preprocesser
@@ -119,8 +117,6 @@ void ScreenAnalyzer::analyze(Point position, const unsigned char *color)
         _aso_screen_max.b = color[0];
     }
 }
-
-#include <ncurses.h>
 
 /**
  *
