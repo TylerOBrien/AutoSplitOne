@@ -122,11 +122,6 @@ void NinjaGaidenAnalyzer::reset()
  */
 void NinjaGaidenAnalyzer::analyze(Point position, const unsigned char *color)
 {
-    if (isWithinKnownZero(position))
-    {
-        //
-    }
-
     if (isWithinTimerFirstDigit(position))
     {
         //
