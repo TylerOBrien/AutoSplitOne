@@ -79,7 +79,7 @@ int StbPngFile::nchannels() const
  */
 const stbi_uc* StbPngFile::data() const
 {
-    stbi_image_free(_data);
+    return _data;
 }
 
 }
