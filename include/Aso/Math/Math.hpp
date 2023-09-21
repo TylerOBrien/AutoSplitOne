@@ -30,6 +30,12 @@ inline NumberTy diff(NumberTy a, NumberTy b)
    return (a > b) ? (a - b) : (b - a);
 }
 
+template <class NumberTy>
+inline bool isBetween(NumberTy value, NumberTy min, NumberTy max)
+{
+   return a >= min && a <= max;
+}
+
 inline int random(int min, int max)
 {
    return min + std::rand() % ((max + 1) - min);
