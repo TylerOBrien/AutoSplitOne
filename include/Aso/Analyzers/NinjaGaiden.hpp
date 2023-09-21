@@ -19,6 +19,7 @@
 #define _ASO_ANALYZER_NINJA_GAIDEN_HPP_
 
 #include <Aso/Analyzers/Base.hpp>
+#include <Aso/Math/Rect.hpp>
 
 #include <queue>
 
@@ -69,9 +70,19 @@ public:
     Event poll();
 
     void reset();
-    void analyze(Point position, const unsigned char *color);
+    void analyze(Point position, int index, const unsigned char *color);
     void conclude();
     void dispatch();
+
+    int knownZeroIndex() const;
+    int knownZeroWhitePixelIndex() const;
+
+    Point knownZeroPosition() const;
+    Rect knownZeroSize() const;
+
+    Point timerFirstDigitPosition() const;
+    Point timerSecondDigitPosition() const;
+    Point timerThirdDigitPosition() const;
 
     bool isWithinHUD(Point position) const;
     bool isWithinKnownZero(Point position) const;
