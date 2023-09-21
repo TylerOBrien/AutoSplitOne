@@ -5,6 +5,8 @@
 */
 
 #include <Aso/Analyzers/EverDriveN8.hpp>
+#include <Aso/Config.hpp>
+#include <Aso/Math/Math.hpp>
 #include <Aso/Math/Point.hpp>
 
 /*
@@ -14,13 +16,8 @@
 */
 
 enum EverDriveN8Config {
-    MENU_X      = 475,
-    MENU_Y      = 13,
-    MENU_W      = 1324,
-    MENU_H      = 1054,
-    MENU_XMAX   = MENU_X + MENU_W,
-    MENU_YMAX   = MENU_Y + MENU_H,
-    MENU_PIXELS = MENU_W * MENU_H,
+    MENU_WIDTH  = 510,
+    MENU_HEIGHT = 494,
 };
 
 /*
@@ -29,12 +26,10 @@ enum EverDriveN8Config {
 |--------------------------------------------------------------------------
 */
 
-uint8_t  _aso_everdrive_n8_menu_average_r = 0;
-uint8_t  _aso_everdrive_n8_menu_average_g = 0;
-uint8_t  _aso_everdrive_n8_menu_average_b = 0;
-uint32_t _aso_everdrive_n8_menu_sum_r     = 0;
-uint32_t _aso_everdrive_n8_menu_sum_g     = 0;
-uint32_t _aso_everdrive_n8_menu_sum_b     = 0;
+aso::Point _aso_edn8_menu_top_left     = {-1, -1};
+aso::Point _aso_edn8_menu_top_right    = {-1, -1};
+aso::Point _aso_edn8_menu_bottom_left  = {-1, -1};
+aso::Point _aso_edn8_menu_bottom_right = {-1, -1};
 
 /*
 |--------------------------------------------------------------------------
@@ -74,15 +69,13 @@ Event EverDriveN8Analyzer::poll()
  */
 void EverDriveN8Analyzer::reset()
 {
-    _previousState           = _currentState;
-    _currentState.isMenuOpen = false;
+    _previousState              = _currentState;
+    _currentState.isMenuOpen    = false;
 
-    _aso_everdrive_n8_menu_average_r = 0;
-    _aso_everdrive_n8_menu_average_g = 0;
-    _aso_everdrive_n8_menu_average_b = 0;
-    _aso_everdrive_n8_menu_sum_r     = 0;
-    _aso_everdrive_n8_menu_sum_g     = 0;
-    _aso_everdrive_n8_menu_sum_b     = 0;
+    _aso_edn8_menu_top_left     = {-1, -1};
+    _aso_edn8_menu_top_right    = {-1, -1};
+    _aso_edn8_menu_bottom_left  = {-1, -1};
+    _aso_edn8_menu_bottom_right = {-1, -1};
 }
 
 /**
@@ -90,14 +83,29 @@ void EverDriveN8Analyzer::reset()
  */
 void EverDriveN8Analyzer::analyze(Point position, const unsigned char *color)
 {
-    if (position.x >= EverDriveN8Config::MENU_X &&
-        position.x <= EverDriveN8Config::MENU_XMAX &&
-        position.y >= EverDriveN8Config::MENU_Y &&
-        position.y <= EverDriveN8Config::MENU_YMAX)
+    if (color[0] > 32 && color[1] > 32 && color[2] > 32)
     {
-        _aso_everdrive_n8_menu_sum_r += color[2];
-        _aso_everdrive_n8_menu_sum_g += color[1];
-        _aso_everdrive_n8_menu_sum_b += color[0];
+        if (_aso_edn8_menu_top_left.x == -1)
+        {
+            _aso_edn8_menu_top_left = position;
+            _aso_edn8_menu_bottom_left.x = position.x;
+        }
+    }
+    else
+    {
+        if (_aso_edn8_menu_top_left.x != -1 && _aso_edn8_menu_top_right.x == -1)
+        {
+            _aso_edn8_menu_top_right = position;
+            _aso_edn8_menu_bottom_right.x = position.x;
+        }
+        else if (_aso_edn8_menu_top_right.x != -1)
+        {
+            if (_aso_edn8_menu_bottom_left.y == -1 && position.x == _aso_edn8_menu_bottom_left.x)
+            {
+                _aso_edn8_menu_bottom_left.y = position.y;
+                _aso_edn8_menu_bottom_right.y = position.y;
+            }
+        }
     }
 }
 
@@ -106,17 +114,15 @@ void EverDriveN8Analyzer::analyze(Point position, const unsigned char *color)
  */
 void EverDriveN8Analyzer::conclude()
 {
-    _aso_everdrive_n8_menu_average_r = _aso_everdrive_n8_menu_sum_r / EverDriveN8Config::MENU_PIXELS;
-    _aso_everdrive_n8_menu_average_g = _aso_everdrive_n8_menu_sum_g / EverDriveN8Config::MENU_PIXELS;
-    _aso_everdrive_n8_menu_average_b = _aso_everdrive_n8_menu_sum_b / EverDriveN8Config::MENU_PIXELS;
-
     _currentState.isMenuOpen = (
-        _aso_everdrive_n8_menu_average_r > 24 &&
-        _aso_everdrive_n8_menu_average_r < 48 &&
-        _aso_everdrive_n8_menu_average_g > 24 &&
-        _aso_everdrive_n8_menu_average_g < 48 &&
-        _aso_everdrive_n8_menu_average_b > 24 &&
-        _aso_everdrive_n8_menu_average_b < 48
+        aso::isBetween(_aso_edn8_menu_top_left.x,     715 - 20,  715 + 20) &&
+        aso::isBetween(_aso_edn8_menu_top_left.y,     275 - 20,  275 + 20) &&
+        aso::isBetween(_aso_edn8_menu_top_right.x,    1185 - 20, 1185 + 20) &&
+        aso::isBetween(_aso_edn8_menu_top_right.y,    275 - 20,  275 + 20) &&
+        aso::isBetween(_aso_edn8_menu_bottom_left.x,  715 - 20,  715 + 20) &&
+        aso::isBetween(_aso_edn8_menu_bottom_left.y,  745 - 20,  745 + 20) &&
+        aso::isBetween(_aso_edn8_menu_bottom_right.x, 1185 - 20, 1185 + 20) &&
+        aso::isBetween(_aso_edn8_menu_bottom_right.y, 745 - 20,  745 + 20)
     );
 }
 
