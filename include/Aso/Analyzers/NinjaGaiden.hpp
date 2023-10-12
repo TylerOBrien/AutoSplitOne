@@ -47,10 +47,14 @@ struct NinjaGaidenConfigKey {
 
 struct NinjaGaidenState {
     bool isTimerZero;
+    bool didFadeIn;
+    bool didFadeOut;
 };
 
 enum NinjaGaidenEvent {
     TIMER_ZERO = 0x00000009,
+    FADE_IN    = 0x0000000A,
+    FADE_OUT   = 0x0000000B,
 };
 
 class NinjaGaidenAnalyzer
@@ -83,6 +87,12 @@ public:
     Point timerFirstDigitPosition() const;
     Point timerSecondDigitPosition() const;
     Point timerThirdDigitPosition() const;
+
+    bool isCurrentKnownWhitePixelFullWhite() const;
+    bool isCurrentKnownWhitePixelFadedWhite() const;
+    bool isCurrentKnownWhitePixelFullBlack() const;
+    bool isPreviousKnownWhitePixelAlmostFullWhite() const;
+    bool isPreviousKnownWhitePixelFadedWhite() const;
 
     bool isWithinHUD(Point position) const;
     bool isWithinKnownZero(Point position) const;

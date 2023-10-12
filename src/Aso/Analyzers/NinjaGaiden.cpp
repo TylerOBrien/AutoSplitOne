@@ -26,6 +26,10 @@ int aso::NinjaGaidenAnalyzer::index = -1;
 
 int _aso_ninja_gaiden_timer_diff_sum[3] = {-1};
 
+bool _aso_is_first_analyze = true;
+aso::BGR _aso_ninja_gaiden_current_known_white_pixel;
+aso::BGR _aso_ninja_gaiden_previous_known_white_pixel;
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -87,10 +91,14 @@ int NinjaGaidenConfig::HUD::height()
  */
 NinjaGaidenAnalyzer::NinjaGaidenAnalyzer()
 {
-    aso::NinjaGaidenConfigKey::HUD::xMin = Config::insert(439);
+    /* aso::NinjaGaidenConfigKey::HUD::xMin = Config::insert(439);
     aso::NinjaGaidenConfigKey::HUD::xMax = Config::insert(439 + 1062);
     aso::NinjaGaidenConfigKey::HUD::yMin = Config::insert(104);
-    aso::NinjaGaidenConfigKey::HUD::yMax = Config::insert(104 + 110);
+    aso::NinjaGaidenConfigKey::HUD::yMax = Config::insert(104 + 110); */
+    aso::NinjaGaidenConfigKey::HUD::xMin = Config::insert(195);
+    aso::NinjaGaidenConfigKey::HUD::xMax = Config::insert(195 + 471);
+    aso::NinjaGaidenConfigKey::HUD::yMin = Config::insert(47);
+    aso::NinjaGaidenConfigKey::HUD::yMax = Config::insert(47 + 48);
 }
 
 /**
@@ -119,7 +127,11 @@ Event NinjaGaidenAnalyzer::poll()
 void NinjaGaidenAnalyzer::reset()
 {
     _previousState = _currentState;
+    _currentState.didFadeIn   = false;
+    _currentState.didFadeOut  = false;
     _currentState.isTimerZero = false;
+
+    _aso_is_first_analyze = true;
     _aso_ninja_gaiden_timer_diff_sum[0] = -1;
     _aso_ninja_gaiden_timer_diff_sum[1] = -1;
     _aso_ninja_gaiden_timer_diff_sum[2] = -1;
@@ -137,6 +149,13 @@ void NinjaGaidenAnalyzer::analyze(Point position, int index, const unsigned char
 
     const BGR *head  = (BGR*)(color - index);
     const BGR *white = head + knownZeroWhitePixelIndex();
+
+    if (_aso_is_first_analyze)
+    {
+        _aso_is_first_analyze = false;
+        _aso_ninja_gaiden_previous_known_white_pixel = _aso_ninja_gaiden_current_known_white_pixel;
+        _aso_ninja_gaiden_current_known_white_pixel = *white;
+    }
 
     if (white[0].r < 200 &&
         white[0].g < 200 &&
@@ -177,11 +196,23 @@ void NinjaGaidenAnalyzer::analyze(Point position, int index, const unsigned char
     }
 }
 
+#include <ncurses.h>
+
 /**
  *
  */
 void NinjaGaidenAnalyzer::conclude()
 {
+    if (isCurrentKnownWhitePixelFullWhite() && isPreviousKnownWhitePixelFadedWhite())
+    {
+        _currentState.didFadeIn = true;
+    }
+
+    if (isCurrentKnownWhitePixelFullBlack() && isPreviousKnownWhitePixelFadedWhite())
+    {
+        _currentState.didFadeOut = true;
+    }
+
     _currentState.isTimerZero = (
         _aso_ninja_gaiden_timer_diff_sum[0] != -1 &&
         _aso_ninja_gaiden_timer_diff_sum[1] != -1 &&
@@ -201,6 +232,16 @@ void NinjaGaidenAnalyzer::dispatch()
     {
         _events.push(NinjaGaidenEvent::TIMER_ZERO);
     }
+
+    if (_currentState.didFadeIn)
+    {
+        _events.push(NinjaGaidenEvent::FADE_IN);
+    }
+
+    if (_currentState.didFadeOut)
+    {
+        _events.push(NinjaGaidenEvent::FADE_OUT);
+    }
 }
 
 /**
@@ -216,7 +257,7 @@ int NinjaGaidenAnalyzer::knownZeroIndex() const
     int tileWidth  = (xMax - xMin) / 27;
     int tileHeight = (yMax - yMin) / 3;
 
-    return ((yMin + (tileHeight * 2)) * 1920) + xMin + (tileWidth * 2);
+    return ((yMin + (tileHeight * 2)) * 852) + xMin + (tileWidth * 2);
 }
 
 /**
@@ -232,7 +273,7 @@ int NinjaGaidenAnalyzer::knownZeroWhitePixelIndex() const
     int tileWidth  = (xMax - xMin) / 27;
     int tileHeight = (yMax - yMin) / 3;
 
-    return (((yMin + 8) + (tileHeight * 2)) * 1920) + (xMin + 4) + (tileWidth * 2);
+    return (((yMin + 8) + (tileHeight * 2)) * 852) + (xMin + 4) + (tileWidth * 2);
 }
 
 /**
@@ -310,6 +351,65 @@ Point NinjaGaidenAnalyzer::timerThirdDigitPosition() const
     int tileHeight = (yMax - yMin) / 3;
 
     return Point(xMin + (tileWidth * 8), yMin + (tileHeight * 1));
+}
+
+/**
+ *
+ */
+bool NinjaGaidenAnalyzer::isCurrentKnownWhitePixelFullWhite() const
+{
+    return _aso_ninja_gaiden_current_known_white_pixel.r > 200 &&
+           _aso_ninja_gaiden_current_known_white_pixel.g > 200 &&
+           _aso_ninja_gaiden_current_known_white_pixel.b > 200;
+}
+
+/**
+ *
+ */
+bool NinjaGaidenAnalyzer::isCurrentKnownWhitePixelFadedWhite() const
+{
+    return _aso_ninja_gaiden_current_known_white_pixel.r < 200 &&
+           _aso_ninja_gaiden_current_known_white_pixel.g < 200 &&
+           _aso_ninja_gaiden_current_known_white_pixel.b < 200 &&
+           _aso_ninja_gaiden_current_known_white_pixel.r > 32 &&
+           _aso_ninja_gaiden_current_known_white_pixel.g > 32 &&
+           _aso_ninja_gaiden_current_known_white_pixel.b > 32;
+}
+
+/**
+ *
+ */
+bool NinjaGaidenAnalyzer::isCurrentKnownWhitePixelFullBlack() const
+{
+    return _aso_ninja_gaiden_current_known_white_pixel.r < 32 &&
+           _aso_ninja_gaiden_current_known_white_pixel.g < 32 &&
+           _aso_ninja_gaiden_current_known_white_pixel.b < 32;
+}
+
+/**
+ *
+ */
+bool NinjaGaidenAnalyzer::isPreviousKnownWhitePixelAlmostFullWhite() const
+{
+    return _aso_ninja_gaiden_previous_known_white_pixel.r < 200 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.g < 200 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.b < 200 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.r > 170 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.g > 170 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.b > 170;
+}
+
+/**
+ *
+ */
+bool NinjaGaidenAnalyzer::isPreviousKnownWhitePixelFadedWhite() const
+{
+    return _aso_ninja_gaiden_previous_known_white_pixel.r < 170 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.g < 170 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.b < 170 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.r > 32 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.g > 32 &&
+           _aso_ninja_gaiden_previous_known_white_pixel.b > 32;
 }
 
 /**
