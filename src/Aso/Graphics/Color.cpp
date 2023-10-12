@@ -28,6 +28,16 @@ Color::Color()
 /**
  *
  */
+Color::Color(BGR bgr)
+    : r(bgr.r),
+      g(bgr.g),
+      b(bgr.b),
+      a(255)
+{}
+
+/**
+ *
+ */
 Color::Color(uint8_t r, uint8_t g, uint8_t b)
     : r(r),
       g(g),
