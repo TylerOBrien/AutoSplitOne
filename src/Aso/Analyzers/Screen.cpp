@@ -130,9 +130,9 @@ void ScreenAnalyzer::conclude()
     );
 
     _currentState.isWhite = (
-        _aso_screen_min.r > 224 &&
-        _aso_screen_min.g > 224 &&
-        _aso_screen_min.b > 224
+        _aso_screen_min.r > 200 &&
+        _aso_screen_min.g > 200 &&
+        _aso_screen_min.b > 200
     );
 }
 
